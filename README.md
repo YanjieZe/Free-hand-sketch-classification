@@ -1,5 +1,10 @@
 # Free-Hand Sketch Classification
 
+## Our dataset (.png)
+Our dataset is uploaded to google drive. The link is:
+```
+https://drive.google.com/file/d/1CVu5CljixuK9mjiQUEIVjY7rlSSdRzWu/view?usp=sharing
+```
 
 ## Dataset
 
@@ -7,7 +12,7 @@ Before training an RPCL-pix2seq, you first need a pixel-formed sketch dataset tr
 ``python seq2png.py``, and it follows an example usage.
 
 ```
-python seq2png.py --input_dir=dataset/quickdraw --output_dir=dataset/quickdraw_png --png_width=28 --categories={'cow','panda', 'lion', 'tiger', 'raccoon', 'monkey', 'hedgehog', 'zebra', 'horse', 'owl', 'elephant', 'squirrel', 'sheep', 'dog', 'bear', 'kangaroo', 'whale', 'crocodile', 'rhinoceros', 'penguin', 'camel', 'flamingo', 'giraffe', 'pig', 'cat'}
+python seq2png.py --input_dir=dataset/quickdraw --output_dir=dataset/quickdraw_png --png_width=28
 ```
 
 
