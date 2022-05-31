@@ -1,12 +1,23 @@
 # Free-Hand Sketch Classification
 
+TODO List:
+- [ ] logger
+- [ ] data augmentation
+- [ ] tensorboard
+
+## Run
+```
+bash scripts/train.sh
+```
+
+
 ## Our dataset (.png)
 Our dataset is uploaded to google drive. The link is:
 ```
 https://drive.google.com/file/d/1CVu5CljixuK9mjiQUEIVjY7rlSSdRzWu/view?usp=sharing
 ```
 
-## Dataset
+### Dataset Process
 
 Before training an RPCL-pix2seq, you first need a pixel-formed sketch dataset translated from [QuickDraw dataset](https://quickdraw.withgoogle.com/data). Each sketch image is in **48x48x1**. The provided `seq2png.py` is used to create the required dataset. You are able to build your own pixel-formed dataset based on QuickDraw dataset with
 ``python seq2png.py``, and it follows an example usage.
