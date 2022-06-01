@@ -13,7 +13,7 @@ def parse_args():
 
 
     # data
-    parser.add_argument('--data_dir', type=str, default='dataset/quickdraw_png')
+    parser.add_argument('--data_dir', type=str, default='/Users/yangqing/Desktop/undergraduate/machine learning/project/Free-hand-sketch-classification/src/utils/dataset/quickdraw_png')
     parser.add_argument('--img_size', type=int, default=28)
     parser.add_argument('--num_class', type=int, default=25)
 
