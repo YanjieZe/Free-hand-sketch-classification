@@ -55,6 +55,12 @@ class CNN(nn.Module):
                     img = img.view(img.size(0), 1, 28, 28)
                     img = img.to(torch.float32)
                     label = label.to(torch.long)
+
+                    # use gpu
+                    if args.use_gpu:
+                        img = img.cuda()
+                        label = label.cuda()
+                        
                     output = self(img)
                     _, predicted = torch.max(output.data, 1)
                     total += label.size(0)
