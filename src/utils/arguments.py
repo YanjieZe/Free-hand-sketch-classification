@@ -14,6 +14,7 @@ def parse_args():
 
     # data
     parser.add_argument('--data_dir', type=str, default='dataset/quickdraw_png')
+    parser.add_argument('--save_dir', type=str, default='checkpoints')
     parser.add_argument('--img_size', type=int, default=28)
     parser.add_argument('--num_class', type=int, default=25)
 

@@ -66,6 +66,26 @@ class CNN(nn.Module):
                     total += label.size(0)
                     correct += (predicted == label).sum().item()
             print(colored('Accuracy of the network on the validation images: {} %'.format(100 * correct / total), 'red'))
+    
+    def test(self, dataloader_test, args):
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for img, label in dataloader_test:
+                img = img.view(img.size(0), 1, 28, 28)
+                img = img.to(torch.float32)
+                label = label.to(torch.long)
+
+                # use gpu
+                if args.use_gpu:
+                    img = img.cuda()
+                    label = label.cuda()
+                    
+                output = self(img)
+                _, predicted = torch.max(output.data, 1)
+                total += label.size(0)
+                correct += (predicted == label).sum().item()
+        print(colored('Accuracy of the network on the test images: {} %'.format(100 * correct / total), 'cyan'))
 
     
    
