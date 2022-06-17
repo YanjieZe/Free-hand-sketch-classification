@@ -9,7 +9,7 @@ def parse_args():
 
     parser.add_argument('--use_gpu', action='store_true', help='use gpu')
 
-    parser.add_argument('--alg', type=str, default='cnn', choices=['cnn', "sketch_rcnn"], help='algorithm')
+    parser.add_argument('--alg', type=str, default='cnn', choices=['cnn', "sketch_r2cnn", "vit"], help='algorithm')
 
     parser.add_argument("--img_form", type=str, default="png", choices=["png", "svg"])
 
@@ -30,6 +30,8 @@ def parse_args():
     parser.add_argument('--num_workers', type=int, default=4)
 
 
+    # vit
+    parser.add_argument('--patch_size', type=int, default=7)
     
 
     args = parser.parse_args()

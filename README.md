@@ -1,9 +1,5 @@
 # Free-Hand Sketch Classification
 
-TODO List:
-- [ ] logger
-- [ ] data augmentation
-- [ ] tensorboard
 
 ## Run
 ```
@@ -11,11 +7,11 @@ bash scripts/train.sh
 ```
 
 
-## Our dataset (.png)
+## Our dataset: QuickDraw (both png and svg)
 Our dataset is uploaded to google drive. The link is:
-```
-https://drive.google.com/file/d/1CVu5CljixuK9mjiQUEIVjY7rlSSdRzWu/view?usp=sharing
-```
+- [png file](https://drive.google.com/file/d/1CVu5CljixuK9mjiQUEIVjY7rlSSdRzWu/view?usp=sharing)
+- [svg file](https://drive.google.com/file/d/1tizohsP9u97Ql-ORg2Koezmq4LNWfxiG/view?usp=sharing)
+
 
 ## Results
 
