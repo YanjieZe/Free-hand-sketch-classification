@@ -213,11 +213,11 @@ class ResNet18Backbone(CNNBackbone):
         if self.in_channels in [1, 3]:
             self.conv1 = cnn.conv1
             self.conv1_new = None
-            print('[*] ResNet50Backbone: use pretrained conv1 with {} input channels'.format(cnn.conv1.in_channels))
+            print('[*] ResNet18Backbone: use pretrained conv1 with {} input channels'.format(cnn.conv1.in_channels))
         else:
             self.conv1_new = nn.Conv2d(self.in_channels, 64, kernel_size=7, stride=2, padding=3, bias=False)
             self.conv1 = None
-            print('[*] ResNet50Backbone: use a new conv1 with {} input channels'.format(self.in_channels))
+            print('[*] ResNet18Backbone: use a new conv1 with {} input channels'.format(self.in_channels))
         self.bn1 = cnn.bn1
         self.relu = cnn.relu
         self.maxpool = cnn.maxpool

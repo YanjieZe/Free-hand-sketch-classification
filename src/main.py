@@ -64,7 +64,7 @@ def main():
     # create dataloader
     train_data_collate = train_data_collate_SVG if args.img_form == "svg" else None
     dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, collate_fn=train_data_collate)
-    dataloader_val = torch.utils.data.DataLoader(dataset_val, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
+    dataloader_val = torch.utils.data.DataLoader(dataset_val, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, collate_fn=train_data_collate)
 
 
 
