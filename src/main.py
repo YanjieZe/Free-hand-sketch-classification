@@ -1,5 +1,5 @@
 from utils.arguments import parse_args
-from utils.dataloader import DatasetQuickdraw
+from utils.dataloader import DatasetQuickdrawPNG, DatasetQuickdrawSVG
 import utils.misc as misc
 from algorithms import create_model
 import torch.optim as optim
@@ -13,8 +13,8 @@ def main():
 
     # create dataset
     transform = None
-    dataset_train = DatasetQuickdraw(args.data_dir, transform, mode="train")
-    dataset_val = DatasetQuickdraw(args.data_dir, transform, mode="val")
+    dataset_train = DatasetQuickdrawPNG(args.data_dir, transform, mode="train") if args.img_form == "png" else DatasetQuickdrawSVG(args.data_dir, transform, mode="train")
+    dataset_val = DatasetQuickdrawPNG(args.data_dir, transform, mode="val") if args.img_form == "png" else DatasetQuickdrawSVG(args.data_dir, transform, mode="val")
     
     # create dataloader
     dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)

@@ -10,6 +10,7 @@ def parse_args():
 
     parser.add_argument('--alg', type=str, default='cnn', choices=['cnn'])
 
+    parser.add_argument("--img_form", type=str, default="png", choices=["png", "svg"])
 
 
     # data
