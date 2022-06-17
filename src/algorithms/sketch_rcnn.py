@@ -7,6 +7,8 @@ import sys
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import time
+from termcolor import colored
 
 _project_folder_ = os.path.abspath('../')
 if _project_folder_ not in sys.path:
@@ -90,9 +92,9 @@ class SketchR2CNN(BaseModel):
                  img_size,
                  thickness,
                  num_categories,
-                 intensity_channels=1,
+                 intensity_channels=8,
                  train_cnn=True,
-                 device=None):
+                 device="cuda"):
         super().__init__()
 
         self.img_size = img_size
@@ -128,3 +130,75 @@ class SketchR2CNN(BaseModel):
         logits = self.fc(cnnfeat)
 
         return logits, intensities, images
+
+    def cuda(self):
+        self.to('cuda')
+        return self
+
+    def parameters(self):
+        return self.params_to_optimize()
+
+    def train(self, dataloader_train, dataloader_val, optimizer, num_epochs, args):
+        for epoch in range(num_epochs):
+            current_time = time.time()
+            for i, data_batch in enumerate(dataloader_train):
+
+
+                label = data_batch['category'].long().to(self.device)
+
+                points = data_batch['points3'].to(self.device)
+                points_offset = data_batch['points3_offset'].to(self.device)
+                points_length = data_batch['points3_length']
+                        
+
+
+                logits, attention, images = self(points, points_offset, points_length)
+                loss = F.cross_entropy(logits, label)
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+                if i % 1000 == 0:
+                    new_time = time.time()
+                    duration = new_time - current_time
+                    current_time = new_time
+                    print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Time: {:.2f}'.format(epoch + 1, num_epochs, i + 1, len(dataloader_train), loss.item(), duration))
+
+            # validation
+            correct = 0
+            total = 0
+            with torch.no_grad():
+                for img, label in dataloader_val:
+                    img = img.view(img.size(0), 1, 28, 28)
+                    img = img.to(torch.float32)
+                    label = label.to(torch.long)
+
+                    # use gpu
+                    if args.use_gpu:
+                        img = img.cuda()
+                        label = label.cuda()
+                        
+                    output = self(img)
+                    _, predicted = torch.max(output.data, 1)
+                    total += label.size(0)
+                    correct += (predicted == label).sum().item()
+            print(colored('Accuracy of the network on the validation images: {} %'.format(100 * correct / total), 'red'))
+    
+    def test(self, dataloader_test, args):
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for img, label in dataloader_test:
+                img = img.view(img.size(0), 1, 28, 28)
+                img = img.to(torch.float32)
+                label = label.to(torch.long)
+
+                # use gpu
+                if args.use_gpu:
+                    img = img.cuda()
+                    label = label.cuda()
+                    
+                output = self(img)
+                _, predicted = torch.max(output.data, 1)
+                total += label.size(0)
+                correct += (predicted == label).sum().item()
+        print(colored('Accuracy of the network on the test images: {} %'.format(100 * correct / total), 'cyan'))

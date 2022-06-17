@@ -1,4 +1,5 @@
 import argparse
+from termcolor import colored
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Free-Hand Sketch Classifier')
@@ -8,7 +9,7 @@ def parse_args():
 
     parser.add_argument('--use_gpu', action='store_true', help='use gpu')
 
-    parser.add_argument('--alg', type=str, default='cnn', choices=['cnn'])
+    parser.add_argument('--alg', type=str, default='cnn', choices=['cnn', "sketch_rcnn"], help='algorithm')
 
     parser.add_argument("--img_form", type=str, default="png", choices=["png", "svg"])
 
@@ -32,5 +33,9 @@ def parse_args():
     
 
     args = parser.parse_args()
+
+
+    print(colored("alg: {}".format(args.alg), "green"))
+    print(colored("img_form: {}".format(args.img_form), "green"))
 
     return args

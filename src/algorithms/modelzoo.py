@@ -207,12 +207,56 @@ class SketchANetBackbone(CNNBackbone):
 
         return x
 
+class ResNet18Backbone(CNNBackbone):
+    def _init(self):
+        cnn = torchvision.models.resnet18(pretrained=self.pretrained)
+        if self.in_channels in [1, 3]:
+            self.conv1 = cnn.conv1
+            self.conv1_new = None
+            print('[*] ResNet50Backbone: use pretrained conv1 with {} input channels'.format(cnn.conv1.in_channels))
+        else:
+            self.conv1_new = nn.Conv2d(self.in_channels, 64, kernel_size=7, stride=2, padding=3, bias=False)
+            self.conv1 = None
+            print('[*] ResNet50Backbone: use a new conv1 with {} input channels'.format(self.in_channels))
+        self.bn1 = cnn.bn1
+        self.relu = cnn.relu
+        self.maxpool = cnn.maxpool
+        self.layer1 = cnn.layer1
+        self.layer2 = cnn.layer2
+        self.layer3 = cnn.layer3
+        self.layer4 = cnn.layer4
+        self.avgpool = cnn.avgpool
+
+        num_out_features = 512
+        return num_out_features
+
+    def forward(self, x):
+        if self.conv1 is not None:
+            x = self.conv1(x)
+        else:
+            x = self.conv1_new(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+
+        x = self.avgpool(x)
+        x = x.view(x.size(0), -1)
+
+        return x
+
+
 
 CNN_MODELS = {
     'densenet161': DenseNet161Backbone,
     'resnet101': ResNet101Backbone,
     'resnet50': ResNet50Backbone,
     'sketchanet': SketchANetBackbone,
+    'resnet18': ResNet18Backbone,
 }
 
 CNN_IMAGE_SIZES = {
@@ -220,4 +264,5 @@ CNN_IMAGE_SIZES = {
     'resnet101': 224,
     'resnet50': 224,
     'sketchanet': 225,
+    'resnet18': 224,
 }
