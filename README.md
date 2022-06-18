@@ -18,3 +18,10 @@ Our dataset is uploaded to google drive. The link is:
 | algorithm | val acc | test acc |
 | --- | --- | --- |
 | cnn | 39.5328 | none |
+
+## Sketch r2cnn
+epoch 20: 7.0368
+
+## vit
+epoch 20: 64.1568
+epoch 40: 66.416

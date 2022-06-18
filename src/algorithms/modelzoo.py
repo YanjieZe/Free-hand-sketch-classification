@@ -56,6 +56,7 @@ class DenseNet161Backbone(CNNBackbone):
             print('[*] DenseNet161Backbone: use a new conv0 with {} input channels'.format(self.in_channels))
 
         num_out_features = cnn.classifier.in_features
+
         return num_out_features
 
     def forward(self, x):
@@ -64,6 +65,49 @@ class DenseNet161Backbone(CNNBackbone):
         out = F.avg_pool2d(out, kernel_size=7, stride=1).view(features.size(0), -1)
         return out
 
+
+class DenseNet121Backbone(CNNBackbone):
+
+    def _init(self):
+        cnn = torchvision.models.densenet121(pretrained=self.pretrained)
+
+        if self.in_channels in [1, 3]:
+            self.features = cnn.features
+            print('[*] DenseNet121Backbone: use pretrained conv0 with {} input channels'.format(
+                self.features.conv0.in_channels))
+        else:
+            from collections import OrderedDict
+            print('[*] DenseNet121Backbone: cnn.features -', cnn.features.__class__.__name__)
+            module_dict = OrderedDict()
+            for name, module in cnn.features.named_children():
+                if name == 'conv0':
+                    module_dict[name + '_new'] = nn.Conv2d(self.in_channels,
+                                                           module.out_channels,
+                                                           kernel_size=module.kernel_size,
+                                                           stride=module.stride,
+                                                           padding=module.padding,
+                                                           bias=False)
+                else:
+                    module_dict[name] = module
+            self.features = nn.Sequential(module_dict)
+            print('[*] DenseNet121Backbone: use a new conv0 with {} input channels'.format(self.in_channels))
+
+        num_out_features = cnn.classifier.in_features
+
+        return num_out_features
+
+    def forward(self, x):
+        features = self.features(x)
+        out = F.relu(features, inplace=True)
+        out = F.avg_pool2d(out, kernel_size=7, stride=1).view(features.size(0), -1)
+        return out
+
+class Identity(nn.Module):
+    def __init__(self):
+        super(Identity, self).__init__()
+        
+    def forward(self, x):
+        return x
 
 class ResNet101Backbone(CNNBackbone):
 
@@ -244,7 +288,7 @@ class ResNet18Backbone(CNNBackbone):
         x = self.layer3(x)
         x = self.layer4(x)
 
-        x = self.avgpool(x)
+        # x = self.avgpool(x)
         x = x.view(x.size(0), -1)
 
         return x

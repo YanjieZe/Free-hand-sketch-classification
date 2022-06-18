@@ -9,7 +9,7 @@ def parse_args():
 
     parser.add_argument('--use_gpu', action='store_true', help='use gpu')
 
-    parser.add_argument('--alg', type=str, default='cnn', choices=['cnn', "sketch_r2cnn", "vit"], help='algorithm')
+    parser.add_argument('--alg', type=str, default='cnn', choices=['cnn', "sketch_r2cnn", "vit", "densenet"], help='algorithm')
 
     parser.add_argument("--img_form", type=str, default="png", choices=["png", "svg"])
 
@@ -25,7 +25,7 @@ def parse_args():
     # hyper param for training
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--momentum', type=float, default=0.9)
-    parser.add_argument('--batch_size', type=int, default=64)
+    parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--num_epochs', type=int, default=100)
     parser.add_argument('--num_workers', type=int, default=4)
 

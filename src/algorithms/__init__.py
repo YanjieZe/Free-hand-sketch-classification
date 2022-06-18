@@ -1,6 +1,7 @@
 from .cnn import CNN
 from .sketch_rcnn import SketchR2CNN
 from .vit import ViT
+from .densenet import DenseNet
 from .modelzoo import CNN_MODELS
 import torchvision
 
@@ -24,7 +25,8 @@ def create_model(args):
                     heads=8, 
                     mlp_dim=1024,
                     channels=1)
-        
+    elif args.alg == "densenet":
+        model = DenseNet(args.img_size, args.num_class)
     else:
         raise ValueError('Unknown algorithm: {}'.format(args.alg))
 
