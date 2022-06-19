@@ -6,21 +6,24 @@ import torch.optim as optim
 import torch
 import os
 
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+os.environ["CUDA_VISIBLE_DEVICES"] = '7'
+
 def main():
     args = parse_args()
 
     misc.seed_all(args.seed)
+    print(args.use_gpu)
+    print(args.alg)
 
     # create dataset
     transform = None
-    dataset_train = DatasetQuickdraw(args.data_dir, transform, mode="train")
-    dataset_val = DatasetQuickdraw(args.data_dir, transform, mode="val")
+    dataset_train = DatasetQuickdraw(args.data_dir, transform, mode="train") #1750000
+    dataset_val = DatasetQuickdraw(args.data_dir, transform, mode="val") #62500
     
     # create dataloader
     dataloader_train = torch.utils.data.DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
     dataloader_val = torch.utils.data.DataLoader(dataset_val, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
-
-
 
     # create model
     model = create_model(args)
@@ -42,9 +45,6 @@ def main():
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
     torch.save(model.state_dict(), os.path.join(args.save_dir, args.alg))
-
-
-
 
 
 if __name__ == '__main__':

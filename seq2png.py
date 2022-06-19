@@ -164,7 +164,7 @@ def main():
         'The sketch category to be translated to the pixel form from the sequential form.'
     )
 
-    dataset = [ 'kangaroo', 'whale', 'crocodile', 'rhinoceros', 'penguin', 'camel', 'flamingo', 'giraffe', 'pig', 'cat']
+    dataset = ['kangaroo', 'whale', 'crocodile', 'rhinoceros', 'penguin', 'camel', 'flamingo', 'giraffe', 'pig', 'cat']
     
     in_dir = FLAGS.input_dir
     out_dir = FLAGS.output_dir
