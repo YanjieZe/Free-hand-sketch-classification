@@ -2,10 +2,7 @@
 
 
 ## Run
-```
-bash scripts/train.sh
-```
-
+See `scripts/` for training scripts.
 
 ## Our dataset: QuickDraw (both png and svg)
 Our dataset is uploaded to google drive. The link is:
